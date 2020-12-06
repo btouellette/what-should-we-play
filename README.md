@@ -1,46 +1,49 @@
-# Getting Started with Create React App
+# What Should We Play
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple app to allow friends to vote on different options for what to play. Built with a [React](reactjs.org/) + [Typescript](https://www.typescriptlang.org/) frontend, [Node](https://nodejs.org/en/) + Typescript + [Mongo](https://www.mongodb.com/) backend, and deployed on [Heroku](https://heroku.com)
 
-## Available Scripts
+Bootstrapped with [create-react-app](https://github.com/facebookincubator/create-react-app). You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)
 
-In the project directory, you can run:
+Currently deployed at https://what-should-we-play.herokuapp.com
 
-### `yarn start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Packages used in the backend and the frontend are managed separately via two separate package.json files using [yarn](https://yarnpkg.com/). Package installation needs to happen twice, once for each, before running
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+git clone git@github.com:btouellette/what-should-we-play.git
+cd what-should-we-play
+yarn install
+cd react-ui
+yarn install
+```
 
-### `yarn test`
+## Development
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `yarn dev-client`
+
+Run the React UI in development mode. Will open http://localhost:3000 in your browser with hot reload enabled
+
+### `yarn dev-server`
+
+Run the Node backend in development mode using [nodemon](https://nodemon.io/) to watch for updates to Typescript files for hot reload
+
+### `yarn dev`
+
+Uses [concurrently](https://github.com/kimmobrunfeldt/concurrently) to run both dev-client and dev-server simultaneously via [`./bootstrap.ts`](bootstrap.ts) which is set up to cleanly exit both processes when killed
 
 ### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds both Node backend and React UI frontend for deployment or testing against production version
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `yarn start`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Starts Node server from production build. `yarn build` must be run first
 
-### `yarn eject`
+### `yarn test`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Run front-end tests on the React UI configured in *.test.tsx files
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Deploying
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The backend package.json is set up with a Heroku postbuild script to automatically build both the front and backend after pushing the repo to Heroku
