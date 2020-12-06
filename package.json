@@ -2,44 +2,48 @@
   "name": "what-should-we-play",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.6",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
-    "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
-  },
+  "description": "App for deciding what to play",
+  "main": "server/server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node ./build/index.js",
+    "build": "tsc && cd react-ui && yarn run build",
+    "dev": "concurrently \"yarn run dev-client\" \"yarn run dev-server\"",
+    "dev-client": "cd react-ui && yarn start",
+    "dev-server": "nodemon",
+    "test": "cd react-ui && yarn test",
+    "heroku-postbuild": "tsc && cd react-ui && yarn install && yarn run build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/btouellette/what-should-we-play.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "keywords": [
+    "node",
+    "heroku",
+    "create-react-app",
+    "react"
+  ],
+  "author": "Brian Ouellette",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/btouellette/what-should-we-play/issues"
+  },
+  "homepage": "https://github.com/btouellette/what-should-we-play#readme",
+  "dependencies": {
+    "@types/express": "^4.17.9",
+    "express": "^4.17.1",
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.1.0"
+  },
+  "engines": {
+    "node": "12.x.x"
   }
 }
