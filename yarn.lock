@@ -22,6 +22,13 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/concurrently@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-5.2.1.tgz#de20f99f4db3e8ea5176c82033b79d1f343f307f"
+  integrity sha512-0hN1M4D2TRvJCxT8SnYhVAATontVZ5ASxw98bhYOwvkRdpkSm3fNebMjMZ75CNv1kv7WVDJtkHIWW4YrEWfvhQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/connect@*":
   version "3.4.33"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.33.tgz#31610c901eca573b8713c3330abc6e6b9f588546"
