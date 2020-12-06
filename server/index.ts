@@ -9,14 +9,15 @@ const port = process.env.PORT || 3080;
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 // Answer API requests.
-app.get('/api/items', function (req, res) {
-    res.set('Content-Type', 'application/json');
-    res.send('{"message":"Hello from the custom server!"}');
+app.get('/api/exists/:room', function (req, res) {
+  const room = req.params.room;
+  res.set('Content-Type', 'application/json');
+  res.send(false);
 });
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function (req, res) {
-    res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
 app.listen(port, function () {

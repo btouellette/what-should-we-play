@@ -1,15 +1,21 @@
-import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
 import Room from './Room';
+import generateName from '../helper/nameGenerator';
 import './App.css';
 
 const App = () => {
-  const createNewRoom = () => {
-
+  const createNewRoom = async () => {
+    // Find a room name that is not in use
+    let exists = true;
+    while (exists) {
+      const name = generateName();
+      const response = await fetch(`/api/exists/${name}`);
+      exists = await response.json();
+    }
   };
 
   return (
