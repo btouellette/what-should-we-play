@@ -13,7 +13,7 @@ const HomePage = () => {
       const response = await fetch(`/api/exists/${name}`);
       exists = await response.json();
     }
-    history.push(`/room/${name}`);
+    history.push(`/${name}`);
   };
 
   return (
