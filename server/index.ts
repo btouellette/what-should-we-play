@@ -1,5 +1,20 @@
 import * as express from 'express';
 import * as path from 'path';
+import * as mongoose from 'mongoose';
+import * as dotenv from 'dotenv';
+
+// Read in any environment variables (used in development only)
+dotenv.config({ path: `${__dirname}/.env` });
+
+// Connect to the database
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+};
+const mongooseURL = process.env.MONGO_URL || 'mongodb://localhost/wswp_db';
+mongoose.connect(mongooseURL, mongooseOptions);
 
 // Create a new express application instance
 const app = express();
