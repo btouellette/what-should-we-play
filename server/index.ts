@@ -38,3 +38,9 @@ app.get('*', function (req, res) {
 app.listen(port, function () {
   console.log(`Node worker ${process.pid}: listening on port ${port}`);
 });
+
+// Log unhandled errors and restart
+process.on('uncaughtException', function (err) {
+  console.log(err);
+  process.exit(1);
+});
