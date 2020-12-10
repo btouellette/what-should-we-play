@@ -2,6 +2,8 @@ import * as express from 'express';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import generateName from './helper/nameGenerator';
+import Room from './models/room'
 
 // Read in any environment variables (used in development only)
 dotenv.config({ path: `${__dirname}/.env` });
@@ -24,10 +26,37 @@ const port = process.env.PORT || 3080;
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 // Answer API requests.
-app.get('/api/exists/:room', function (req, res) {
-  const room = req.params.room;
-  res.set('Content-Type', 'application/json');
-  res.send(false);
+app.post('/api/create-room', function (req, res) {
+  console.log('Creating new room');
+  let safetyValve = 10;
+
+  (function createRoom() {
+    const room = new Room({
+      name: generateName()
+    });
+    room.save((err: any) => {
+      if (err) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+          // Room name already in use
+          if (safetyValve-- <= 0) {
+            console.error('Failed to create room due to safety valve');
+            res.set('Content-Type', 'text/plain');
+            res.status(500).send('Could not find unique room name');
+          } else {
+            createRoom()
+          }
+        } else {
+          console.error(`Failed to create room: ${err}`);
+          res.set('Content-Type', 'text/plain');
+          res.status(500).send('Failed to create new room');
+        }
+      } else {
+        console.log(`Created room: ${room.name}`);
+        res.set('Content-Type', 'application/json');
+        res.send(room);
+      }
+    });
+  })();
 });
 
 // All remaining requests return the React app, so it can handle routing.

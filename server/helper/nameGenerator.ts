@@ -1,4 +1,4 @@
-const generateName = () => {
+const generateName = ():string => {
   const randomInt = (from: number, to: number) => {
     return Math.floor((Math.random() * to) + from);
   }
@@ -2627,7 +2627,7 @@ const animals = [
   'mongoose',
   'mongrel',
   'monkey',
-  'monkfish', 
+  'monkfish',
   'monoclonius',
   'montanoceratops',
   'moorhen',
@@ -3077,7 +3077,7 @@ const animals = [
   'titmouse',
   'toad',
   'toadfish',
-  'tomtit', 
+  'tomtit',
   'topi',
   'tortoise',
   'toucan',

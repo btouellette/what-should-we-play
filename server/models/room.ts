@@ -1,12 +1,23 @@
 import * as mongoose from 'mongoose';
 
+export interface IOption {
+  name: string;
+  userVotes: string[];
+}
+
+export interface IRoom extends mongoose.Document {
+  name: string;
+  users: string[];
+  options: IOption[];
+}
+
 const roomSchema = new mongoose.Schema({
-  roomName: { type: String, unique: true },
+  name: { type: String, required: true, unique: true },
   users: [String],
   options: [{
-    optionName: String,
+    name: String,
     userVotes: [String] // List of users who voted for this option
   }]
 });
 
-export default mongoose.model('Room', roomSchema);
+export default mongoose.model<IRoom>('Room', roomSchema);
