@@ -6,6 +6,13 @@
     return res.json();
   };
 
+  export const toText = (res: Response) => {
+    if (!res.ok) {
+      throw res;
+    }
+    return res.text();
+  };
+
   export const logError = (err: Response) => {
     err.text().then((text: string) => { console.error(text); });
   };
