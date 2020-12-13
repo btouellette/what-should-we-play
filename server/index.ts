@@ -60,7 +60,17 @@ app.post('/api/create-room', (req, res) => {
 });
 
 app.get('/api/get-room', (req, res) => {
-
+  Room.findOne({ name: req.query.name as string })
+  .then((room) => {
+    if (room) {
+      res.set('Content-Type', 'application/json');
+      res.send(room);
+    } else {
+      console.error(`Failed to find room: ${req.query.name}`);
+      res.set('Content-Type', 'text/plain');
+      res.status(500).send('Failed to find room');
+    }
+  });
 });
 
 // All remaining requests return the React app, so it can handle routing.

@@ -1,27 +1,34 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toJSON, logError } from "../helpers/promiseHelpers";
-import { IRoom } from "../../../server/models/room"
+import { IRoom } from "../../../server/models/room";
 
 const Room = () => {
-  const [room, setRoom] = useState({});
+  // Access the dynamic pieces of the URL
+  let { roomName } = useParams<Record<string, string>>();
+  const [roomData, setRoomData] = useState<IRoom | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/get-room', { method: 'GET' })
+    fetch('/api/get-room?' + new URLSearchParams({ name: roomName }), { method: 'GET' })
     .then(toJSON)
-    .then((data: IRoom) => {  })
+    .then((data: IRoom) => { setRoomData(data); })
     .catch(logError)
-    .finally(() => {  });
-  });
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
-  let { roomName } = useParams<Record<string, string>>();
+    .finally(() => { setLoading(false); });
+  }, [roomName]);
 
   return (
-    <div>
-      <h3>ID: {roomName}</h3>
-    </div>
+    (loading ?
+      <div>Loading</div>
+        :
+      (!roomData ?
+        <div>Could not find room: {roomName}</div>
+          :
+        <div>
+          <h3>ID: {roomName}</h3>
+        </div>
+      )
+    )
   );
 }
 
