@@ -1,27 +1,16 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { IRoom } from "../../../server/models/room"
+import { toJSON, logError } from "../helpers/promiseHelpers";
 
 const HomePage = () => {
   const history = useHistory();
   const [executing, setExecuting] = useState(false);
 
-  const toJSON = (res: Response) => {
-    if (!res.ok) {
-      throw res;
-    }
-    return res.json();
-  };
-
-  const logError = (err: Response) => {
-    err.text().then((text: string) => { console.error(text); });
-  };
-
   const createNewRoom = async () => {
     setExecuting(true);
     fetch('/api/create-room', { method: 'POST' })
     .then(toJSON)
-    .then((data: IRoom) => { history.push(data.name); })
+    .then((name: string) => { history.push(name); })
     .catch(logError)
     .finally(() => { setExecuting(false); });
   };

@@ -26,7 +26,7 @@ const port = process.env.PORT || 3080;
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 // Answer API requests.
-app.post('/api/create-room', function (req, res) {
+app.post('/api/create-room', (req, res) => {
   console.log('Creating new room');
   let safetyValve = 10;
 
@@ -53,23 +53,27 @@ app.post('/api/create-room', function (req, res) {
       } else {
         console.log(`Created room: ${room.name}`);
         res.set('Content-Type', 'application/json');
-        res.send(room);
+        res.send(room.name);
       }
     });
   })();
 });
 
+app.get('/api/get-room', (req, res) => {
+
+});
+
 // All remaining requests return the React app, so it can handle routing.
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
-app.listen(port, function () {
+app.listen(port, () => {
   console.log(`Node worker ${process.pid}: listening on port ${port}`);
 });
 
 // Log unhandled errors and restart
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', (err) => {
   console.log(err);
   process.exit(1);
 });
