@@ -8,6 +8,8 @@ const Room = () => {
   let { roomName } = useParams<Record<string, string>>();
   const [roomData, setRoomData] = useState<IRoom | undefined>(undefined);
   const [loading, setLoading] = useState(true);
+  const [userNameInput, setUserNameInput] = useState('');
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     fetch('/api/get-room?' + new URLSearchParams({ name: roomName }), { method: 'GET' })
@@ -17,19 +19,43 @@ const Room = () => {
     .finally(() => { setLoading(false); });
   }, [roomName]);
 
-  return (
-    (loading ?
+  // TODO: extract Loading, RoomError, UserNameSelect to separate components and use routing
+  if (loading) {
+    return (
       <div>Loading</div>
-        :
-      (!roomData ?
-        <div>Could not find room: {roomName}</div>
-          :
-        <div>
-          <h3>ID: {roomName}</h3>
-        </div>
-      )
-    )
-  );
+    );
+  } else if (!roomData) {
+    return (
+      <div>Could not find room: {roomName}</div>
+    );
+  } else if (!userName) {
+    return (
+      <div>
+        <div>Select username:</div>
+        { roomData.users.map((user) => {
+            return (
+              <div key={user}>
+                {user}
+              </div>
+            );
+          }) }
+          <form onSubmit={() => { setUserName(userNameInput); }}>
+            <input
+              type="text"
+              placeholder="Username"
+              value={userNameInput}
+              onChange={e => setUserNameInput(e.target.value)}>
+            </input>
+          </form>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h3>ID: {roomName}</h3>
+      </div>
+    );
+  }
 }
 
 export default Room;
