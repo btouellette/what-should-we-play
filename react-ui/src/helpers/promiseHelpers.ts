@@ -1,12 +1,12 @@
 
-  export const toJSON = (res: Response) => {
+  export const responseToJSON = (res: Response) => {
     if (!res.ok) {
       throw res;
     }
     return res.json();
   };
 
-  export const toText = (res: Response) => {
+  export const responseToText = (res: Response) => {
     if (!res.ok) {
       throw res;
     }

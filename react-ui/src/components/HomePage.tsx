@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { toText, logError } from "../helpers/promiseHelpers";
+import { responseToText, logError } from "../helpers/promiseHelpers";
 
 const HomePage = () => {
   const history = useHistory();
@@ -9,7 +9,7 @@ const HomePage = () => {
   const createNewRoom = async () => {
     setExecuting(true);
     fetch('/api/create-room', { method: 'POST' })
-    .then(toText)
+    .then(responseToText)
     .then((name) => { history.push(name); })
     .catch(logError)
     .finally(() => { setExecuting(false); });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { toJSON, logError } from "../helpers/promiseHelpers";
+import { responseToJSON, logError } from "../helpers/promiseHelpers";
 import { IRoom } from "../../../server/models/room";
 
 const Room = () => {
@@ -11,7 +11,7 @@ const Room = () => {
 
   useEffect(() => {
     fetch('/api/get-room?' + new URLSearchParams({ name: roomName }), { method: 'GET' })
-    .then(toJSON)
+    .then(responseToJSON)
     .then((data: IRoom) => { setRoomData(data); })
     .catch(logError)
     .finally(() => { setLoading(false); });
