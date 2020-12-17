@@ -21,9 +21,10 @@ const Room = () => {
     .finally(() => { setLoading(false); });
   }, [roomName]);
 
+  //TODO: save selected username for this room to cookie
   return loading   ? <Loading /> :
-         !roomData ? <RoomNotFound roomName={roomName} /> :
-         !userName ? <UserNameSelect roomData={roomData} setUserName={setUserName} /> :
+         !roomData ? <RoomNotFound name={roomName} /> :
+         !userName ? <UserNameSelect users={roomData.users} setUserName={setUserName} /> :
     <div>
       <h3>Room: {roomName}</h3>
       <h3>User: {userName}</h3>
