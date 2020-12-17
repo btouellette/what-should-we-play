@@ -1,12 +1,12 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import { IRoom } from "../../../server/models/room";
 
 interface UserNameSelectProps {
   users: IRoom['users'];
-  setUserName: Dispatch<SetStateAction<string>>;
+  onSelectUserName(newUserName: string): void;
 }
 
-const UserNameSelect = ({ users, setUserName }: UserNameSelectProps) => {
+const UserNameSelect = ({ users, onSelectUserName }: UserNameSelectProps) => {
   const [userNameInput, setUserNameInput] = useState('');
 
   return (
@@ -15,13 +15,13 @@ const UserNameSelect = ({ users, setUserName }: UserNameSelectProps) => {
       {
       users.map((user) => {
         return (
-          <div key={user} onClick={() => setUserName(user)}>
+          <div key={user} onClick={() => onSelectUserName(user)}>
             {user}
           </div>
         );
       })
       }
-      <form onSubmit={() => { setUserName(userNameInput); }}>
+      <form onSubmit={() => { onSelectUserName(userNameInput); }}>
         <input
           type="text"
           placeholder="Username"

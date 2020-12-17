@@ -14,6 +14,8 @@ const Room = () => {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
+    //TODO: load selected username for this room from cookie
+
     fetch('/api/get-room?' + new URLSearchParams({ name: roomName }), { method: 'GET' })
     .then(responseToJSON)
     .then((data: IRoom) => { setRoomData(data); })
@@ -21,10 +23,14 @@ const Room = () => {
     .finally(() => { setLoading(false); });
   }, [roomName]);
 
-  //TODO: save selected username for this room to cookie
+  const saveAndSetUserName = (newUserName: string) => {
+    //TODO: save selected username for this room to cookie
+    setUserName(newUserName);
+  };
+
   return loading   ? <Loading /> :
          !roomData ? <RoomNotFound name={roomName} /> :
-         !userName ? <UserNameSelect users={roomData.users} setUserName={setUserName} /> :
+         !userName ? <UserNameSelect users={roomData.users} onSelectUserName={saveAndSetUserName} /> :
     <div>
       <h3>Room: {roomName}</h3>
       <h3>User: {userName}</h3>
