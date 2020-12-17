@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { responseToText, logError } from "../helpers/promiseHelpers";
+import { responseToText, logError } from "../helpers/responseHelpers";
 
 const HomePage = () => {
   const history = useHistory();

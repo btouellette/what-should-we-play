@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { responseToJSON, logError } from "../helpers/promiseHelpers";
+import Loading from "./Loading";
+import RoomNotFound from "./RoomNotFound";
+import UserNameSelect from "./UserNameSelect";
+import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IRoom } from "../../../server/models/room";
 
 const Room = () => {
@@ -8,7 +11,6 @@ const Room = () => {
   let { roomName } = useParams<Record<string, string>>();
   const [roomData, setRoomData] = useState<IRoom | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  const [userNameInput, setUserNameInput] = useState('');
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -19,43 +21,13 @@ const Room = () => {
     .finally(() => { setLoading(false); });
   }, [roomName]);
 
-  // TODO: extract Loading, RoomError, UserNameSelect to separate components and use routing
-  if (loading) {
-    return (
-      <div>Loading</div>
-    );
-  } else if (!roomData) {
-    return (
-      <div>Could not find room: {roomName}</div>
-    );
-  } else if (!userName) {
-    return (
-      <div>
-        <div>Select username:</div>
-        { roomData.users.map((user) => {
-            return (
-              <div key={user}>
-                {user}
-              </div>
-            );
-          }) }
-          <form onSubmit={() => { setUserName(userNameInput); }}>
-            <input
-              type="text"
-              placeholder="Username"
-              value={userNameInput}
-              onChange={e => setUserNameInput(e.target.value)}>
-            </input>
-          </form>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <h3>ID: {roomName}</h3>
-      </div>
-    );
-  }
+  return loading   ? <Loading /> :
+         !roomData ? <RoomNotFound roomName={roomName} /> :
+         !userName ? <UserNameSelect roomData={roomData} setUserName={setUserName} /> :
+    <div>
+      <h3>Room: {roomName}</h3>
+      <h3>User: {userName}</h3>
+    </div>;
 }
 
 export default Room;
