@@ -1,7 +1,7 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { IRoom } from "../../../server/models/room";
 
-export interface UserNameSelectProps {
+interface UserNameSelectProps {
   users: IRoom['users'];
   setUserName: Dispatch<SetStateAction<string>>;
 }
