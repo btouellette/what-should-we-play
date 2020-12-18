@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import RoomNotFound from "./RoomNotFound";
 import UserNameSelect from "./UserNameSelect";
 import VotingOption from "./VotingOption";
+import * as Constants from "../helpers/constants";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IRoom } from "../../../server/models/room";
 
@@ -21,7 +22,7 @@ const Room = () => {
     .then(responseToJSON)
     .then((data: IRoom) => {
       // Load selected username for this room from localStorage if present
-      const storedUserName = JSON.parse(window.localStorage.getItem('storedUserNames') || '{}')[roomName];
+      const storedUserName = JSON.parse(window.localStorage.getItem(Constants.localStorageRoomToUserKey) || '{}')[roomName];
       if (storedUserName) {
         setUserName(storedUserName);
       }
@@ -30,17 +31,6 @@ const Room = () => {
     .catch(logError)
     .finally(() => { setLoading(false); });
   }, [roomName]);
-
-  const saveAndSetUserName = (newUserName: string) => {
-    if (newUserName) {
-      // Save selected username for this room to localStorage
-      const storedUserNames = JSON.parse(window.localStorage.getItem('storedUserNames') || '{}');
-      storedUserNames[roomName] = newUserName;
-      window.localStorage.setItem('storedUserNames', JSON.stringify(storedUserNames));
-      //TODO: if username not in room.users save to backend and add
-      setUserName(newUserName);
-    }
-  };
 
   const addNewOption = (optionName: string) => {
     //TODO: check if option already exists
@@ -57,7 +47,7 @@ const Room = () => {
 
   return loading   ? <Loading /> :
          !roomData ? <RoomNotFound name={roomName} /> :
-         !userName ? <UserNameSelect users={roomData.users} onSelectUserName={saveAndSetUserName} /> :
+         !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} /> :
     <div>
       <h3>Room: {roomName}</h3>
       <h3>User: {userName}</h3>
