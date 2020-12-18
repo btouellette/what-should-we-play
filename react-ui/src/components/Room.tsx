@@ -64,7 +64,7 @@ const Room = () => {
       <div>
         {
           roomData.options.map((option) => (
-            <VotingOption option={option} />
+            <VotingOption option={option} userName={userName} />
           ))
         }
       </div>

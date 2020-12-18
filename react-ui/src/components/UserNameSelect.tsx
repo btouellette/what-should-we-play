@@ -21,7 +21,10 @@ const UserNameSelect = ({ users, onSelectUserName }: UserNameSelectProps) => {
         );
       })
       }
-      <form onSubmit={() => { onSelectUserName(userNameInput); }}>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        onSelectUserName(userNameInput);
+      }}>
         <input
           type="text"
           placeholder="Username"
