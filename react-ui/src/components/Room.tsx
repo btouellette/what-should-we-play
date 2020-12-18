@@ -16,19 +16,30 @@ const Room = () => {
   const [optionInput, setOptionInput] = useState('');
 
   useEffect(() => {
-    //TODO: load selected username for this room from cookie
-
+    // Fetch room data for this room
     fetch('/api/get-room?' + new URLSearchParams({ name: roomName }), { method: 'GET' })
     .then(responseToJSON)
-    .then((data: IRoom) => { setRoomData(data); })
+    .then((data: IRoom) => {
+      // Load selected username for this room from localStorage if present
+      const storedUserName = JSON.parse(window.localStorage.getItem('storedUserNames') || '{}')[roomName];
+      if (storedUserName) {
+        setUserName(storedUserName);
+      }
+      setRoomData(data);
+    })
     .catch(logError)
     .finally(() => { setLoading(false); });
   }, [roomName]);
 
   const saveAndSetUserName = (newUserName: string) => {
-    //TODO: save selected username for this room to cookie
-    //TODO: if username not in room.users save to backend and add
-    setUserName(newUserName);
+    if (newUserName) {
+      // Save selected username for this room to localStorage
+      const storedUserNames = JSON.parse(window.localStorage.getItem('storedUserNames') || '{}');
+      storedUserNames[roomName] = newUserName;
+      window.localStorage.setItem('storedUserNames', JSON.stringify(storedUserNames));
+      //TODO: if username not in room.users save to backend and add
+      setUserName(newUserName);
+    }
   };
 
   const addNewOption = (optionName: string) => {

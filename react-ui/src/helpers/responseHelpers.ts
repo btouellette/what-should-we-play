@@ -13,5 +13,10 @@ export const responseToText = (res: Response) => {
 };
 
 export const logError = (err: Response) => {
-  err.text().then((text: string) => { console.error(text); });
+  if (err.text) {
+    err.text().then((text: string) => { console.error(text); });
+  } else {
+    console.error(JSON.stringify(err));
+    return err;
+  }
 };
