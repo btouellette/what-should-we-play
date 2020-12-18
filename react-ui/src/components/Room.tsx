@@ -11,9 +11,14 @@ import { IRoom } from "../../../server/models/room";
 const Room = () => {
   // Access the dynamic pieces of the URL
   let { roomName } = useParams<Record<string, string>>();
+  // Set up state for Room component
+  // All relevant information about the room (pulled from the backend)
   const [roomData, setRoomData] = useState<IRoom | undefined>(undefined);
+  // Flag to determine if loading is complete or not
   const [loading, setLoading] = useState(true);
+  // Username selected for this room
   const [userName, setUserName] = useState('');
+  // User input for new option to add to vote on
   const [optionInput, setOptionInput] = useState('');
 
   useEffect(() => {
