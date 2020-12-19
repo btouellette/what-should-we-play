@@ -100,3 +100,13 @@ export const addOption = async (req: Request, res: Response) => {
     res.status(500).send('Failed to add option');
   }
 };
+
+export const removeRoom = async (roomName: string) => {
+  // Unexposed API to delete room entirely
+  log.debug(`Deleting room: ${roomName}`);
+  try {
+    await Room.findOneAndDelete({name: roomName});
+  } catch (err) {
+    log.error(`Failed to delete room ${roomName}: ${err}`);
+  }
+}
