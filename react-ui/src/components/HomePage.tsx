@@ -17,11 +17,11 @@ const HomePage = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>Welcome!</p>
+      <header id="header" className="alt App-header">
+        <h1>What should we play?</h1>
         <p>Trying to decide what your group should play? Where to go? What to do? Make a new room and vote on it!</p>
-        <button onClick={createNewRoom} disabled={executing}>Create Room</button>
-      </header>
+        <button className="button solid" onClick={createNewRoom} disabled={executing}>Create Room</button>
+       </header>
     </div>
   );
 };

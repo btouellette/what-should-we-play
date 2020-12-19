@@ -6,15 +6,18 @@ import {
 import Room from './Room';
 import HomePage from './HomePage';
 import './App.css';
+import '../assets/css/main.css';
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/:roomName" component={Room} />
-      </Switch>
-    </Router>
+    <div id="wrapper">
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/:roomName" component={Room} />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 

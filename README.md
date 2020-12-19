@@ -4,6 +4,8 @@ A simple app to allow friends to vote on different options for what to play. Bui
 
 Bootstrapped with [create-react-app](https://github.com/facebookincubator/create-react-app). You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)
 
+Using the Stellar theme from [HTML5 UP](https://html5up.net) by [@ajlkn](https://twitter.com/ajlkn)
+
 Currently deployed at https://what-should-we-play.herokuapp.com
 
 ## Setup
