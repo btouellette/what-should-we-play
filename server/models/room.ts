@@ -18,6 +18,6 @@ const roomSchema = new mongoose.Schema({
     name: String,
     userVotes: [String] // List of users who voted for this option
   }]
-});
+}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 export default mongoose.model<IRoom>('Room', roomSchema);
