@@ -55,6 +55,23 @@ export const getRoom = async (req: Request, res: Response) => {
   }
 };
 
+export const addUser = async (req: Request, res: Response) => {
+  const roomName = req.query.roomName as string;
+  const userName = req.query.userName as string;
+  log.debug(`Adding user to room ${roomName}: ${userName}`);
+  try {
+    // Don't add this user if there is already one by this name
+    const filter = { name: roomName };
+    const update = { $addToSet: { users: userName } };
+    let roomData = await Room.findOneAndUpdate(filter, update, { new: true });
+    res.set('Content-Type', 'application/json');
+    res.send(roomData);
+  } catch (err) {
+    log.error(`Failed to add option: ${err}`);
+    res.status(500).send('Failed to add option');
+  }
+};
+
 export const addOption = async (req: Request, res: Response) => {
   const roomName = req.query.roomName as string;
   const userName = req.query.userName as string;

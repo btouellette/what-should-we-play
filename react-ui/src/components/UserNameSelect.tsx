@@ -1,24 +1,31 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { IRoom } from "../../../server/models/room";
+import { responseToJSON, logError } from "../helpers/responseHelpers";
 import * as Constants from "../helpers/constants";
+import { IRoom } from "../../../server/models/room";
 
 interface UserNameSelectProps {
   users: IRoom['users'];
   roomName: IRoom['name'];
   setUserName: Dispatch<SetStateAction<string>>;
+  setRoomData: Dispatch<SetStateAction<IRoom | undefined>>;
 }
 
-const UserNameSelect = ({ users, roomName, setUserName }: UserNameSelectProps) => {
+const UserNameSelect = ({ users, roomName, setUserName, setRoomData }: UserNameSelectProps) => {
   const [userNameInput, setUserNameInput] = useState('');
 
-  const saveAndSetUserName = (newUserName: string) => {
-    if (newUserName) {
+  const saveAndSetUserName = (userName: string) => {
+    if (userName) {
       // Save selected username for this room to localStorage
       const storedUserNames = JSON.parse(window.localStorage.getItem(Constants.localStorageRoomToUserKey) || '{}');
-      storedUserNames[roomName] = newUserName;
+      storedUserNames[roomName] = userName;
       window.localStorage.setItem(Constants.localStorageRoomToUserKey, JSON.stringify(storedUserNames));
-      //TODO: if username not in room.users save to backend and add
-      setUserName(newUserName);
+      fetch('/api/add-user?' + new URLSearchParams({ userName: userName, roomName: roomName }), { method: 'POST' })
+      .then(responseToJSON)
+      .then((data: IRoom) => {
+        setRoomData(data);
+        setUserName(userName);
+      })
+      .catch(logError);
     }
   };
 

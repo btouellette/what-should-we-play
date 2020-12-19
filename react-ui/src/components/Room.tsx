@@ -46,13 +46,13 @@ const Room = () => {
       .then((data: IRoom) => {
         setRoomData(data);
         setOptionInput('');
-      })
+      });
     }
   };
 
   return loading   ? <Loading /> :
          !roomData ? <RoomNotFound name={roomName} /> :
-         !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} /> :
+         !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
     <div>
       <h3>Room: {roomName}</h3>
       <h3>User: {userName}</h3>
@@ -69,8 +69,8 @@ const Room = () => {
       </form>
       <div>
         {
-          roomData.options.map((option) => (
-            <VotingOption option={option} userName={userName} />
+          roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
+            <VotingOption key={option.name} option={option} userName={userName} />
           ))
         }
       </div>

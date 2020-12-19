@@ -29,6 +29,7 @@ app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 app.post('/api/create-room', API.createRoom);
 app.get('/api/get-room', API.getRoom);
 app.post('/api/add-option', API.addOption);
+app.post('/api/add-user', API.addUser);
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', (req, res) => {
