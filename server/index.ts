@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import log from 'loglevel';
 import generateName from './helper/nameGenerator';
 import Room from './models/room'
 
@@ -27,7 +28,7 @@ app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 // Answer API requests.
 app.post('/api/create-room', (req, res) => {
-  console.log('Creating new room');
+  log.debug('Creating new room');
   // How many retries on name generation before giving up (currently 1500*1500*1728 possible room names)
   let safetyValve = 10;
 
@@ -41,7 +42,7 @@ app.post('/api/create-room', (req, res) => {
         if (err.name === 'MongoError' && err.code === 11000) {
           // Room name already in use, retry name generation up to limit
           if (safetyValve-- <= 0) {
-            console.error('Failed to create room due to safety valve');
+            log.error('Failed to create room due to safety valve');
             res.set('Content-Type', 'text/plain');
             res.status(500).send('Could not find unique room name');
           } else {
@@ -49,13 +50,13 @@ app.post('/api/create-room', (req, res) => {
           }
         } else {
           // Unknown error occurred
-          console.error(`Failed to create room: ${err}`);
+          log.error(`Failed to create room: ${err}`);
           res.set('Content-Type', 'text/plain');
           res.status(500).send('Failed to create new room');
         }
       } else {
         // Successfully created room, return it to front end
-        console.log(`Created room: ${room.name}`);
+        log.debug(`Created room: ${room.name}`);
         res.set('Content-Type', 'application/json');
         res.send(room.name);
       }
@@ -72,10 +73,17 @@ app.get('/api/get-room', (req, res) => {
       res.send(room);
     } else {
       // Unknown error occurred fetching room, possibly one does not exist with this name
-      console.error(`Failed to find room: ${req.query.name}`);
+      log.error(`Failed to find room: ${req.query.name}`);
       res.set('Content-Type', 'text/plain');
       res.status(500).send('Failed to find room');
     }
+  });
+});
+
+app.post('/api/add-option', (req, res) => {
+  Room.findOneAndUpdate({ name: req.query.name as string })
+  .then((room) => {
+
   });
 });
 
@@ -85,11 +93,11 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Node worker ${process.pid}: listening on port ${port}`);
+  log.debug(`Node worker ${process.pid}: listening on port ${port}`);
 });
 
 // Log unhandled errors and restart
 process.on('uncaughtException', (err) => {
-  console.log(err);
+  log.debug(err);
   process.exit(1);
 });
