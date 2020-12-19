@@ -1,0 +1,11 @@
+i {
+  cursor: pointer;
+}
+
+i.voted {
+  color: lightgreen;
+}
+
+i.not-voted {
+  color: black;
+}

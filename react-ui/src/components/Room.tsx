@@ -39,6 +39,7 @@ const Room = () => {
   }, [roomName]);
 
   const addNewOption = (name: string) => {
+    //TODO: add to top at first then animated transition to correct placement (to show user it was added on long lists)
     // Check if option already exists
     if (name.length > 0 && !roomData?.options.some((option) => option.name === name)) {
       // Save to backend
@@ -51,31 +52,40 @@ const Room = () => {
     }
   };
 
-  return loading   ? <Loading /> :
-         !roomData ? <RoomNotFound name={roomName} /> :
-         !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
-    <div>
-      <h3>Room: {roomName}</h3>
-      <h3>User: {userName}</h3>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        addNewOption(optionInput);
-      }}>
-        <input
-          type="text"
-          placeholder="New option"
-          value={optionInput}
-          onChange={e => setOptionInput(e.target.value)}>
-        </input>
-      </form>
-      <div>
+  return (
+    <div id="wrapper">
+      <div id="main">
+        <section id="content" className="main">
         {
-          roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
-            <VotingOption key={option.name} option={option} userName={userName} />
-          ))
+          loading   ? <Loading /> :
+          !roomData ? <RoomNotFound name={roomName} /> :
+          !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
+          <div>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              addNewOption(optionInput);
+            }}>
+              <input
+                type="text"
+                placeholder="New option"
+                value={optionInput}
+                onChange={e => setOptionInput(e.target.value)}>
+              </input>
+            </form>
+            <ol className="fa-ul">
+              {
+                //TODO: can this just be returned from Mongo sorted?
+                roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
+                  <VotingOption key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} />
+                ))
+              }
+            </ol>
+            </div>
         }
+        </section>
       </div>
-    </div>;
+    </div>
+  );
 }
 
 export default Room;

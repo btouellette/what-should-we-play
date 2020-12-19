@@ -1,0 +1,8 @@
+#wrapper {
+  min-height: 100vh;
+  padding: 3em 3em 1em 3em;
+}
+
+ol > li {
+  list-style-type: none;
+}
