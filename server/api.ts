@@ -3,6 +3,7 @@ import log from 'loglevel';
 import generateName from './helper/nameGenerator';
 import Room from './models/room';
 
+// Create a new room an dreturn the room name as a string
 export const createRoom = (req: Request, res: Response) => {
   log.debug('Creating new room');
   // How many retries on name generation before giving up (currently 1500*1500*1728 possible room names)
@@ -39,6 +40,7 @@ export const createRoom = (req: Request, res: Response) => {
   })();
 };
 
+// Fetch data for a specific room returned as JSON
 export const getRoom = async (req: Request, res: Response) => {
   const roomName = req.query.name as string;
   log.debug(`Getting room: ${roomName}`);
@@ -55,6 +57,7 @@ export const getRoom = async (req: Request, res: Response) => {
   }
 };
 
+// Add a new user to a specific room returning new room data as JSON
 export const addUser = async (req: Request, res: Response) => {
   const roomName = req.query.roomName as string;
   const userName = req.query.userName as string;
@@ -72,6 +75,7 @@ export const addUser = async (req: Request, res: Response) => {
   }
 };
 
+// Add a new voting option to a specific room returning new room data as JSON
 export const addOption = async (req: Request, res: Response) => {
   const roomName = req.query.roomName as string;
   const userName = req.query.userName as string;
@@ -101,8 +105,8 @@ export const addOption = async (req: Request, res: Response) => {
   }
 };
 
+// Unexposed API to delete room entirely
 export const removeRoom = async (roomName: string) => {
-  // Unexposed API to delete room entirely
   log.debug(`Deleting room: ${roomName}`);
   try {
     await Room.findOneAndDelete({name: roomName});
