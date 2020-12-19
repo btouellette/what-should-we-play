@@ -7,6 +7,7 @@ import VotingOption from "./VotingOption";
 import * as Constants from "../helpers/constants";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IRoom } from "../../../server/models/room";
+import './Room.css';
 
 const Room = () => {
   // Access the dynamic pieces of the URL

@@ -10,14 +10,12 @@ import '../assets/css/main.css';
 
 const App = () => {
   return (
-    <div id="wrapper">
-      <Router>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/:roomName" component={Room} />
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/:roomName" component={Room} />
+      </Switch>
+    </Router>
   );
 }
 
