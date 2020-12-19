@@ -41,13 +41,10 @@ const Room = () => {
     // Check if option already exists
     if (name.length > 0 && !roomData?.options.some((option) => option.name === name)) {
       // Save to backend
-      fetch('/api/add-option?' + new URLSearchParams({ name: name, userName: userName, roomName: roomName }), { method: 'POST' })
-      .then(() => {
-        const newOption = {
-          name: name,
-          userVotes: [userName]
-        };
-        roomData?.options.push(newOption);
+      fetch('/api/add-option?' + new URLSearchParams({ optionName: name, userName: userName, roomName: roomName }), { method: 'POST' })
+      .then(responseToJSON)
+      .then((data: IRoom) => {
+        setRoomData(data);
         setOptionInput('');
       })
     }

@@ -40,34 +40,44 @@ export const createRoom = (req: Request, res: Response) => {
 };
 
 export const getRoom = async (req: Request, res: Response) => {
+  const roomName = req.query.name as string;
+  log.debug(`Getting room: ${roomName}`);
   try {
-    let roomData = await Room.findOne({ name: req.query.name as string });
+    let roomData = await Room.findOne({ name: roomName });
     // Found room in data store, return it to front end
     res.set('Content-Type', 'application/json');
     res.send(roomData);
   } catch (err) {
     // Error occurred fetching room, possibly one does not exist with this name
-    log.error(`Failed to find room ${req.query.name}: ${err}`);
+    log.error(`Failed to find room ${roomName}: ${err}`);
     res.set('Content-Type', 'text/plain');
     res.status(500).send('Failed to find room');
   }
 };
 
 export const addOption = async (req: Request, res: Response) => {
+  const roomName = req.query.roomName as string;
+  const userName = req.query.userName as string;
+  const optionName = req.query.optionName as string;
+  log.debug(`Adding option to room ${roomName}: ${optionName}`);
   try {
+    // Don't add this option if there is already one by this name
     const filter = {
-      name: req.query.roomName as string,
-      'options.name': { $ne: req.query.optionName as string }
+      name: roomName,
+      'options.name': { $ne: optionName }
     };
+    // Push the new option to the array with the requesting user as the only vote
     const update = {
       $push: {
         options: {
-          name: req.query.optionName as string,
-          userVotes: [req.query.userName as string]
+          name: optionName,
+          userVotes: [userName]
         }
       }
     };
     let roomData = await Room.findOneAndUpdate(filter, update, { new: true });
+    res.set('Content-Type', 'application/json');
+    res.send(roomData);
   } catch (err) {
     log.error(`Failed to add option: ${err}`);
     res.status(500).send('Failed to add option');
