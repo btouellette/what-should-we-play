@@ -16,7 +16,6 @@ const calculateBoundingBoxes = (children: ReactNode) => {
     if (domNode) {
       const nodeBoundingBox = domNode.getBoundingClientRect();
       boundingBoxes[child.key] = nodeBoundingBox;
-      console.log(boundingBoxes);
     }
   });
 
