@@ -53,11 +53,10 @@ const Room = () => {
     }
   };
 
-  //TODO: modify Stellar to remove need for ID elements
   return (
-    <div id="wrapper">
-      <div id="main">
-        <section id="content" className="main">
+    <div className="Room-wrapper">
+      <div className="Room-main">
+        <section className="Room-section">
         {
           loading   ? <Loading /> :
           !roomData ? <RoomNotFound name={roomName} /> :

@@ -24,7 +24,7 @@
 		cursor: default;
 		text-align: center;
 
-		& + #main {
+		& + div.Room-main {
 			padding-top: 4.25em;
 		}
 
@@ -89,7 +89,7 @@
 		@include breakpoint('<=small') {
 			display: none;
 
-			& + #main {
+			& + div.Room-main {
 				padding-top: 0;
 			}
 		}

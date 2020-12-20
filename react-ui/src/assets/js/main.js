@@ -8,7 +8,7 @@
 
 	var	$window = $(window),
 		$body = $('body'),
-		$main = $('#main');
+		$main = $('div.Room-main');
 
 	// Breakpoints.
 		breakpoints({
