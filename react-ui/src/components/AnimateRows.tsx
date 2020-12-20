@@ -33,21 +33,22 @@ const AnimateRows: FC = ({ children }) => {
         const domNode = child.ref.current;
         const firstBox = prevBoundingBox[child.key];
         const lastBox = boundingBox[child.key];
-        const changeInY = firstBox.top - lastBox.top;
-
-        if (changeInY) {
-          requestAnimationFrame(() => {
-            // Before the DOM paints, invert child to old position
-            domNode.style.transform = `translateY(${changeInY}px)`;
-            domNode.style.transition = "transform 0s";
-
+        if (firstBox && lastBox) {
+          const changeInY = firstBox.top - lastBox.top;
+          if (changeInY) {
             requestAnimationFrame(() => {
-              // After the previous frame, remove
-              // the transistion to play the animation
-              domNode.style.transform = "";
-              domNode.style.transition = "transform 500ms";
+              // Before the DOM paints, invert child to old position
+              domNode.style.transform = `translateY(${changeInY}px)`;
+              domNode.style.transition = "transform 0s";
+
+              requestAnimationFrame(() => {
+                // After the previous frame, remove
+                // the transistion to play the animation
+                domNode.style.transform = "";
+                domNode.style.transition = "transform 500ms";
+              });
             });
-          });
+          }
         }
       });
     }
