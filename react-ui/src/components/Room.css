@@ -3,6 +3,14 @@ div.Room-wrapper {
   padding: 3em 3em 1em 3em;
 }
 
+div.Room-main > section.Room-section {
+  padding: 3em 5em 3em 5em;
+}
+
+.Room-section h2 {
+  margin-bottom: 0.2em;
+}
+
 ol > li {
   list-style-type: none;
 }

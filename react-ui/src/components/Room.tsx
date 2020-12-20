@@ -84,7 +84,6 @@ const Room = () => {
               </input>
             </form>
             {
-              //TODO: can this just be returned from Mongo sorted?
               roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
                 <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} />
               ))
