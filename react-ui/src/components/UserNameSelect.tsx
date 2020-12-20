@@ -2,6 +2,7 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import * as Constants from "../helpers/constants";
 import { IRoom } from "../../../server/models/room";
+import './UserNameSelect.css'
 
 interface UserNameSelectProps {
   users: IRoom['users'];
@@ -31,27 +32,28 @@ const UserNameSelect = ({ users, roomName, setUserName, setRoomData }: UserNameS
 
   return (
     <div>
-      <div>Select username:</div>
-      {
-      users.map((user) => {
-        return (
-          <div key={user} onClick={() => saveAndSetUserName(user)}>
-            {user}
-          </div>
-        );
-      })
-      }
+      <div>New here?</div>
       <form onSubmit={(e) => {
         e.preventDefault();
         saveAndSetUserName(userNameInput);
       }}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Enter name"
           value={userNameInput}
           onChange={e => setUserNameInput(e.target.value)}>
         </input>
       </form>
+      <div>Been here before?</div>
+      {
+      users.map((user) => {
+        return (
+          <button className="button UserNameSelect-button" key={user} onClick={() => saveAndSetUserName(user)}>
+            {user}
+          </button>
+        );
+      })
+      }
     </div>
   );
 };
