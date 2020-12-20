@@ -1,10 +1,7 @@
-div.Room-wrapper {
+.Room {
+  padding-top: 1em;
+  padding-bottom: 1em;
   min-height: 100vh;
-  padding: 3em 3em 1em 3em;
-}
-
-div.Room-main > section.Room-section {
-  padding: 3em 5em 3em 5em;
 }
 
 .Room-section h2 {

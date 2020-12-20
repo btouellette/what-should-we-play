@@ -61,39 +61,41 @@ const Room = () => {
   };
 
   return (
-    <div className="Room-wrapper">
-      <div className="Room-main">
-        <section className="Room-section">
-        {
-          loading   ? <Loading /> :
-          !roomData ? <RoomNotFound name={roomName} /> :
-          !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
-          <div>
-            <UserList users={roomData.users} />
+    <div className="Room">
+      <div className="Room-wrapper">
+        <div className="Room-main">
+          <section className="Room-section">
+          {
+            loading   ? <Loading /> :
+            !roomData ? <RoomNotFound name={roomName} /> :
+            !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
+            <div>
+              <UserList users={roomData.users} />
 
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              addNewOption(optionInput);
-            }}>
-              <input
-                type="text"
-                placeholder="New option"
-                maxLength={100}
-                value={optionInput}
-                onChange={e => setOptionInput(e.target.value)}>
-              </input>
-            </form>
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                addNewOption(optionInput);
+              }}>
+                <input
+                  type="text"
+                  placeholder="New option"
+                  maxLength={100}
+                  value={optionInput}
+                  onChange={e => setOptionInput(e.target.value)}>
+                </input>
+              </form>
 
-            <AnimateRows>
-            {
-              roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option, index) => (
-                <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} ref={refs[index]}/>
-              ))
-            }
-            </AnimateRows>
-          </div>
-        }
-        </section>
+              <AnimateRows>
+              {
+                roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option, index) => (
+                  <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} ref={refs[index]}/>
+                ))
+              }
+              </AnimateRows>
+            </div>
+          }
+          </section>
+        </div>
       </div>
     </div>
   );
