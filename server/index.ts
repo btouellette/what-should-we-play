@@ -30,6 +30,7 @@ app.post('/api/create-room', API.createRoom);
 app.get('/api/get-room', API.getRoom);
 app.post('/api/add-option', API.addOption);
 app.post('/api/add-user', API.addUser);
+app.post('/api/change-vote', API.changeVote);
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', (req, res) => {

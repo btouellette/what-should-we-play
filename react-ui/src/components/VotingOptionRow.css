@@ -1,0 +1,34 @@
+div.VotingOption {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+div.VotingOption-votes {
+  display: inline-flex;
+  flex-direction: column;
+  text-align: center;
+  min-width: 3em;
+}
+
+div.VotingOption-votes > * {
+  display: inline-flex;
+  margin: 0 auto;
+  line-height: 2ex;
+}
+
+.VotingOption i {
+  cursor: pointer;
+}
+
+.VotingOption i.voted {
+  color: lightgreen;
+}
+
+.VotingOption i.not-voted {
+  color: black;
+}
+
+div.VotingOption-name {
+  overflow-x: auto;
+}

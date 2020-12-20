@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Loading from "./Loading";
 import RoomNotFound from "./RoomNotFound";
 import UserNameSelect from "./UserNameSelect";
-import VotingOption from "./VotingOption";
+import VotingOptionRow from "./VotingOptionRow";
 import * as Constants from "../helpers/constants";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IRoom } from "../../../server/models/room";
@@ -48,10 +48,12 @@ const Room = () => {
       .then((data: IRoom) => {
         setRoomData(data);
         setOptionInput('');
-      });
+      })
+      .catch(logError);
     }
   };
 
+  //TODO: modify Stellar to remove need for ID elements
   return (
     <div id="wrapper">
       <div id="main">
@@ -68,19 +70,18 @@ const Room = () => {
               <input
                 type="text"
                 placeholder="New option"
+                maxLength={100}
                 value={optionInput}
                 onChange={e => setOptionInput(e.target.value)}>
               </input>
             </form>
-            <ol className="fa-ul">
-              {
-                //TODO: can this just be returned from Mongo sorted?
-                roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
-                  <VotingOption key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} />
-                ))
-              }
-            </ol>
-            </div>
+            {
+              //TODO: can this just be returned from Mongo sorted?
+              roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
+                <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} />
+              ))
+            }
+          </div>
         }
         </section>
       </div>

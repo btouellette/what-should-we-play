@@ -105,6 +105,36 @@ export const addOption = async (req: Request, res: Response) => {
   }
 };
 
+export const changeVote = async (req: Request, res: Response) => {
+  const roomName = req.query.roomName as string;
+  const userName = req.query.userName as string;
+  const optionName = req.query.optionName as string;
+  const votedFor = (req.query.votedFor as string === 'true');
+  log.debug(`Changing vote in room ${roomName}: ${optionName}`);
+  try {
+    const filter = {
+      name: roomName,
+      'options.name': optionName
+    };
+    // Push the new option to the array with the requesting user as the only vote
+    const update = votedFor ? {
+      $addToSet: {
+        'options.$.userVotes': userName
+      }
+    } : {
+      $pull: {
+        'options.$.userVotes': userName
+      }
+    };
+    let roomData = await Room.findOneAndUpdate(filter, update, { new: true });
+    res.set('Content-Type', 'application/json');
+    res.send(roomData);
+  } catch (err) {
+    log.error(`Failed to add option: ${err}`);
+    res.status(500).send('Failed to add option');
+  }
+};
+
 // Unexposed API to delete room entirely
 export const removeRoom = async (roomName: string) => {
   log.debug(`Deleting room: ${roomName}`);
