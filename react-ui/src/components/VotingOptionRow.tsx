@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IOption, IRoom } from "../../../server/models/room";
 import './VotingOptionRow.css';
@@ -10,7 +10,7 @@ interface VotingOptionProps {
   setRoomData: Dispatch<SetStateAction<IRoom | undefined>>;
 }
 
-const VotingOption = ({ option, userName, roomName, setRoomData }: VotingOptionProps) => {
+const VotingOption = React.forwardRef<HTMLDivElement, VotingOptionProps>(({ option, userName, roomName, setRoomData }, ref) => {
   const optionIsVotedFor = option.userVotes.includes(userName);
 
   const updateOptionVote = () => {
@@ -22,7 +22,7 @@ const VotingOption = ({ option, userName, roomName, setRoomData }: VotingOptionP
   };
 
   return (
-    <div className="VotingOption">
+    <div className="VotingOption" ref={ref}>
       <div className="VotingOption-votes">
         <div><i className={`far fa-caret-square-up ${optionIsVotedFor ? 'voted' : 'not-voted'}`} onClick={updateOptionVote}></i></div>
         <div><b>{option.userVotes.length}</b></div>
@@ -30,6 +30,6 @@ const VotingOption = ({ option, userName, roomName, setRoomData }: VotingOptionP
       <div className="VotingOption-name">{option.name}</div>
     </div>
   );
-}
+});
 
 export default VotingOption;

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, createRef } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "./Loading";
 import RoomNotFound from "./RoomNotFound";
 import UserNameSelect from "./UserNameSelect";
 import VotingOptionRow from "./VotingOptionRow";
 import UserList from "./UserList";
+import AnimateRows from "./AnimateRows";
 import * as Constants from "../helpers/constants";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IRoom } from "../../../server/models/room";
@@ -12,7 +13,7 @@ import './Room.css';
 
 const Room = () => {
   // Access the dynamic pieces of the URL
-  let { roomName } = useParams<Record<string, string>>();
+  const { roomName } = useParams<Record<string, string>>();
   // Set up state for Room component
   // All relevant information about the room (pulled from the backend)
   const [roomData, setRoomData] = useState<IRoom | undefined>(undefined);
@@ -22,6 +23,11 @@ const Room = () => {
   const [userName, setUserName] = useState('');
   // User input for new option to add to vote on
   const [optionInput, setOptionInput] = useState('');
+  // Create refs to get DOM elements for sub-divs
+  const refs = useMemo(
+    () => Array.from(Array(roomData?.options.length), () => createRef<HTMLDivElement>()),
+    [roomData?.options.length]
+  );
 
   useEffect(() => {
     // Fetch room data for this room
@@ -78,11 +84,13 @@ const Room = () => {
               </input>
             </form>
 
+            <AnimateRows>
             {
-              roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
-                <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} />
+              roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option, index) => (
+                <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} ref={refs[index]}/>
               ))
             }
+            </AnimateRows>
           </div>
         }
         </section>
