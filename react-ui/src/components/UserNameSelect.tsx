@@ -32,7 +32,7 @@ const UserNameSelect = ({ users, roomName, setUserName, setRoomData }: UserNameS
 
   return (
     <div>
-      <div>New here?</div>
+      { users.length > 0 ? <div>New here?</div> : null }
       <form onSubmit={(e) => {
         e.preventDefault();
         saveAndSetUserName(userNameInput);
@@ -44,15 +44,20 @@ const UserNameSelect = ({ users, roomName, setUserName, setRoomData }: UserNameS
           onChange={e => setUserNameInput(e.target.value)}>
         </input>
       </form>
-      <div>Been here before?</div>
       {
-      users.map((user) => {
-        return (
-          <button className="button UserNameSelect-button" key={user} onClick={() => saveAndSetUserName(user)}>
-            {user}
-          </button>
-        );
-      })
+        users.length > 0 ?
+        <>
+        <div>Been here before?</div>
+        {
+          users.map((user) => {
+            return (
+              <button className="button UserNameSelect-button" key={user} onClick={() => saveAndSetUserName(user)}>
+                {user}
+              </button>
+            );
+          })
+        }
+        </> : null
       }
     </div>
   );
