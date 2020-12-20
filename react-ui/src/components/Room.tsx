@@ -63,6 +63,15 @@ const Room = () => {
           !roomData ? <RoomNotFound name={roomName} /> :
           !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
           <div>
+            <h2>Who's here?</h2>
+            <ul>
+            {
+              roomData.users.map((user) => (
+                <li key={user}>{user}</li>
+              ))
+            }
+            </ul>
+
             <form onSubmit={(e) => {
               e.preventDefault();
               addNewOption(optionInput);
