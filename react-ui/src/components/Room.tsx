@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import RoomNotFound from "./RoomNotFound";
 import UserNameSelect from "./UserNameSelect";
 import VotingOptionRow from "./VotingOptionRow";
+import UserList from "./UserList";
 import * as Constants from "../helpers/constants";
 import { responseToJSON, logError } from "../helpers/responseHelpers";
 import { IRoom } from "../../../server/models/room";
@@ -62,14 +63,7 @@ const Room = () => {
           !roomData ? <RoomNotFound name={roomName} /> :
           !userName ? <UserNameSelect users={roomData.users} roomName={roomName} setUserName={setUserName} setRoomData={setRoomData} /> :
           <div>
-            <h2>Who's here?</h2>
-            <ul>
-            {
-              roomData.users.map((user) => (
-                <li key={user}>{user}</li>
-              ))
-            }
-            </ul>
+            <UserList users={roomData.users} />
 
             <form onSubmit={(e) => {
               e.preventDefault();
@@ -83,6 +77,7 @@ const Room = () => {
                 onChange={e => setOptionInput(e.target.value)}>
               </input>
             </form>
+
             {
               roomData.options.sort((a, b) => b.userVotes.length - a.userVotes.length).map((option) => (
                 <VotingOptionRow key={option.name} option={option} userName={userName} roomName={roomName} setRoomData={setRoomData} />
